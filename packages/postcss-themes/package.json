@@ -20,7 +20,8 @@
 	"bugs": {
 		"url": "https://github.com/WordPress/gutenberg/issues"
 	},
-	"main": "src/index.js",
+	"main": "build/index.js",
+	"module": "build-module/index.js",
 	"dependencies": {
 		"postcss": "^6.0.16"
 	},
