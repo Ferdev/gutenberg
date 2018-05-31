@@ -67,6 +67,8 @@ const {
 	isTyping,
 	getBlockInsertionPoint,
 	isBlockInsertionPointVisible,
+	isInlineInsertionPointVisible,
+	isInlineInsertAvailable,
 	isSavingPost,
 	didPostSaveRequestSucceed,
 	didPostSaveRequestFail,
@@ -2575,6 +2577,26 @@ describe( 'selectors', () => {
 			};
 
 			expect( isBlockInsertionPointVisible( state ) ).toBe( true );
+		} );
+	} );
+
+	describe( 'isInlineInsertionPointVisible', () => {
+		it( 'should return the value in state', () => {
+			const state = {
+				isInlineInsertionPointVisible: true,
+			};
+
+			expect( isInlineInsertionPointVisible( state ) ).toBe( true );
+		} );
+	} );
+
+	describe( 'isInlineInsertAvailable', () => {
+		it( 'should return the value in state', () => {
+			const state = {
+				isInlineInsertAvailable: true,
+			};
+
+			expect( isInlineInsertAvailable( state ) ).toBe( true );
 		} );
 	} );
 

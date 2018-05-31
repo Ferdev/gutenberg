@@ -61,6 +61,16 @@
 		}
 	}
 
+	img {
+		&[data-mce-selected] {
+			outline: none;
+		}
+
+		&::selection {
+			background: none !important;
+		}
+	}
+
 	&[data-is-placeholder-visible="true"] {
 		position: absolute;
 		top: 0;
@@ -80,6 +90,19 @@
 	&.mce-content-body {
 		line-height: $editor-line-height;
 	}
+
+	div.mce-resizehandle {
+		border-radius: 50%;
+		border: 1px solid $black;
+		width: 12px;
+		height: 12px;
+		background: $white;
+		box-sizing: border-box;
+
+		&:hover {
+			background: $white;
+		}
+	}
 }
 
 .editor-rich-text__inline-toolbar {
@@ -95,4 +118,12 @@
 	ul.components-toolbar {
 		box-shadow: $shadow-toolbar;
 	}
+}
+
+.blocks-inline-insertion-point {
+	display: block;
+	z-index: 1;
+	width: 4px;
+	margin-left: -2px;
+	background: $blue-medium-500;
 }

@@ -12,26 +12,62 @@ import { withSelect, withDispatch } from '@wordpress/data';
  */
 import InserterMenu from './menu';
 
+export { default as InserterResultsPortal } from './results-portal';
+
 class Inserter extends Component {
 	constructor() {
 		super( ...arguments );
 
 		this.onToggle = this.onToggle.bind( this );
+		this.isInsertingInline = this.isInsertingInline.bind( this );
+		this.showInsertionPoint = this.showInsertionPoint.bind( this );
+		this.hideInsertionPoint = this.hideInsertionPoint.bind( this );
+		this.state = { isInline: false };
 	}
 
 	onToggle( isOpen ) {
 		const { onToggle } = this.props;
 
 		if ( isOpen ) {
-			this.props.showInsertionPoint();
+			this.showInsertionPoint();
 		} else {
-			this.props.hideInsertionPoint();
+			this.hideInsertionPoint();
 		}
 
 		// Surface toggle callback to parent component
 		if ( onToggle ) {
 			onToggle( isOpen );
 		}
+	}
+
+	showInsertionPoint() {
+		const { showInlineInsertionPoint, showInsertionPoint } = this.props;
+
+		if ( this.isInsertingInline() ) {
+			this.setState( { isInline: true } );
+			showInlineInsertionPoint();
+		} else {
+			this.setState( { isInline: false } );
+			showInsertionPoint();
+		}
+	}
+
+	hideInsertionPoint() {
+		const { hideInlineInsertionPoint, hideInsertionPoint } = this.props;
+
+		if ( this.state.isInline ) {
+			hideInlineInsertionPoint();
+		} else {
+			hideInsertionPoint();
+		}
+	}
+
+	isInsertingInline() {
+		const { selectedBlock, canInsertInline } = this.props;
+
+		return selectedBlock &&
+			! isUnmodifiedDefaultBlock( selectedBlock ) &&
+			canInsertInline;
 	}
 
 	render() {
@@ -42,7 +78,9 @@ class Inserter extends Component {
 			children,
 			onInsertBlock,
 			rootUID,
+			onInsertInline,
 		} = this.props;
+		const { isInline } = this.state;
 
 		if ( items.length === 0 ) {
 			return null;
@@ -70,12 +108,15 @@ class Inserter extends Component {
 				) }
 				renderContent={ ( { onClose } ) => {
 					const onSelect = ( item ) => {
-						onInsertBlock( item );
+						if ( isInline ) {
+							onInsertInline( item );
+						} else {
+							onInsertBlock( item );
+						}
 
 						onClose();
 					};
-
-					return <InserterMenu items={ items } onSelect={ onSelect } rootUID={ rootUID } />;
+					return <InserterMenu items={ items } onSelect={ onSelect } rootUID={ rootUID } isInline={ isInline } />;
 				} }
 			/>
 		);
@@ -89,6 +130,7 @@ export default compose( [
 			getBlockInsertionPoint,
 			getSelectedBlock,
 			getInserterItems,
+			isInlineInsertAvailable,
 		} = select( 'core/editor' );
 		const insertionPoint = getBlockInsertionPoint();
 		const { rootUID } = insertionPoint;
@@ -98,6 +140,7 @@ export default compose( [
 			selectedBlock: getSelectedBlock(),
 			items: getInserterItems( rootUID ),
 			rootUID,
+			canInsertInline: isInlineInsertAvailable(),
 		};
 	} ),
 	withDispatch( ( dispatch, ownProps ) => ( {
@@ -113,5 +156,8 @@ export default compose( [
 			}
 			return dispatch( 'core/editor' ).insertBlock( insertedBlock, index, rootUID );
 		},
+		showInlineInsertionPoint: dispatch( 'core/editor' ).showInlineInsertionPoint,
+		hideInlineInsertionPoint: dispatch( 'core/editor' ).hideInlineInsertionPoint,
+		onInsertInline: dispatch( 'core/editor' ).insertInline,
 	} ) ),
 ] )( Inserter );

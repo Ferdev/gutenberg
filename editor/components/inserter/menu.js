@@ -35,6 +35,7 @@ import './style.scss';
 import BlockPreview from '../block-preview';
 import ItemList from './item-list';
 import ChildBlocks from './child-blocks';
+import InserterResultsPortal from './results-portal';
 
 const MAX_SUGGESTED_ITEMS = 9;
 
@@ -158,7 +159,7 @@ export class InserterMenu extends Component {
 	}
 
 	render() {
-		const { instanceId, onSelect, rootUID } = this.props;
+		const { instanceId, onSelect, rootUID, isInline } = this.props;
 		const { childItems, hoveredItem, suggestedItems, sharedItems, itemsPerCategory, openPanels } = this.state;
 		const isPanelOpen = ( panel ) => openPanels.indexOf( panel ) !== -1;
 
@@ -182,6 +183,8 @@ export class InserterMenu extends Component {
 				/>
 
 				<div className="editor-inserter__results">
+					<InserterResultsPortal.Slot />
+
 					<ChildBlocks
 						rootUID={ rootUID }
 						items={ childItems }
@@ -198,17 +201,27 @@ export class InserterMenu extends Component {
 							<ItemList items={ suggestedItems } onSelect={ onSelect } onHover={ this.onHover } />
 						</PanelBody>
 					}
+
 					{ map( getCategories(), ( category ) => {
 						const categoryItems = itemsPerCategory[ category.slug ];
 						if ( ! categoryItems || ! categoryItems.length ) {
 							return null;
 						}
+
+						if ( isInline && category.slug !== 'inline' ) {
+							return null;
+						}
+
+						if ( ! isInline && category.slug === 'inline' ) {
+							return null;
+						}
+
 						return (
 							<PanelBody
 								key={ category.slug }
 								title={ category.title }
-								opened={ isPanelOpen( category.slug ) }
-								onToggle={ this.onTogglePanel( category.slug ) }
+								opened={ isInline ? true : isPanelOpen( category.slug ) }
+								onToggle={ isInline ? null : this.onTogglePanel( category.slug ) }
 							>
 								<ItemList items={ categoryItems } onSelect={ onSelect } onHover={ this.onHover } />
 							</PanelBody>

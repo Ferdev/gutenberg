@@ -26,6 +26,10 @@ import {
 	insertBlocks,
 	showInsertionPoint,
 	hideInsertionPoint,
+	showInlineInsertionPoint,
+	hideInlineInsertionPoint,
+	setInlineInsertAvailable,
+	setInlineInsertUnavailable,
 	editPost,
 	savePost,
 	trashPost,
@@ -224,6 +228,38 @@ describe( 'actions', () => {
 		it( 'should return the HIDE_INSERTION_POINT action', () => {
 			expect( hideInsertionPoint() ).toEqual( {
 				type: 'HIDE_INSERTION_POINT',
+			} );
+		} );
+	} );
+
+	describe( 'showInlineInsertionPoint', () => {
+		it( 'should return the SHOW_INLINE_INSERTION_POINT action', () => {
+			expect( showInlineInsertionPoint() ).toEqual( {
+				type: 'SHOW_INLINE_INSERTION_POINT',
+			} );
+		} );
+	} );
+
+	describe( 'hideInlineInsertionPoint', () => {
+		it( 'should return the HIDE_INLINE_INSERTION_POINT action', () => {
+			expect( hideInlineInsertionPoint() ).toEqual( {
+				type: 'HIDE_INLINE_INSERTION_POINT',
+			} );
+		} );
+	} );
+
+	describe( 'setInlineInsertAvailable', () => {
+		it( 'should return the SET_INLINE_INSERT_AVAILABLE action', () => {
+			expect( setInlineInsertAvailable() ).toEqual( {
+				type: 'SET_INLINE_INSERT_AVAILABLE',
+			} );
+		} );
+	} );
+
+	describe( 'setInlineInsertUnavailable', () => {
+		it( 'should return the SET_INLINE_INSERT_UNAVAILABLE action', () => {
+			expect( setInlineInsertUnavailable() ).toEqual( {
+				type: 'SET_INLINE_INSERT_UNAVAILABLE',
 			} );
 		} );
 	} );

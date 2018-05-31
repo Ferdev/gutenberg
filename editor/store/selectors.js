@@ -1113,6 +1113,28 @@ export function isBlockInsertionPointVisible( state ) {
 }
 
 /**
+ * Returns true if we should show the inline insertion point.
+ *
+ * @param {Object} state Global application state.
+ *
+ * @return {?boolean} Whether the insertion point is visible or not.
+ */
+export function isInlineInsertionPointVisible( state ) {
+	return state.isInlineInsertionPointVisible;
+}
+
+/**
+ * Returns whether a RichText component is selected and available for inline
+ * insertion.
+ *
+ * @param {boolean} state
+ * @return {boolean} Whether inline insert is available.
+ */
+export function isInlineInsertAvailable( state ) {
+	return state.isInlineInsertAvailable;
+}
+
+/**
  * Returns whether the blocks matches the template or not.
  *
  * @param {boolean} state

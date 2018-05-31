@@ -324,6 +324,53 @@ export function hideInsertionPoint() {
 }
 
 /**
+ * Returns an action object used in signalling that the inline insertion point
+ * should be shown.
+ *
+ * @return {Object} Action object.
+ */
+export function showInlineInsertionPoint() {
+	return {
+		type: 'SHOW_INLINE_INSERTION_POINT',
+	};
+}
+
+/**
+ * Returns an action object hiding the inline insertion point.
+ *
+ * @return {Object} Action object.
+ */
+export function hideInlineInsertionPoint() {
+	return {
+		type: 'HIDE_INLINE_INSERTION_POINT',
+	};
+}
+
+/**
+ * Returns an action object used in signalling that a RichText component is
+ * selected and available for inline insertion.
+ *
+ * @return {Object} Action object.
+ */
+export function setInlineInsertAvailable() {
+	return {
+		type: 'SET_INLINE_INSERT_AVAILABLE',
+	};
+}
+
+/**
+ * Returns an action object used in signalling that inline insertion is not
+ * available.
+ *
+ * @return {Object} Action object.
+ */
+export function setInlineInsertUnavailable() {
+	return {
+		type: 'SET_INLINE_INSERT_UNAVAILABLE',
+	};
+}
+
+/**
  * Returns an action object resetting the template validity.
  *
  * @param {boolean}  isValid  template validity flag.
